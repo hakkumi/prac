@@ -1,8 +1,24 @@
+<?
+$db = new PDO("mysql:host=localhost;dbname=workspace__s243;charset=utf8", "root","root");
+
+$news = $db->query("select *  , date_format(date,'%d.%m.%Y' ) fmt from news order by 'date' limit 5 ");
+?>
+
 <?include("menu.php");?>
 
         <main>
             <h2 class="main-title">Новости</h2>
-
+            <?
+            while($row = $news->fetch()){
+                ?>
+                <div class="news-item">
+                    <div class="news-date"><?=$row['fmt']?></div>
+                    <div class="news-title"><?=$row['title']?></div>
+                    <div class="news-text"><?=$row['announce']?>
+                    </div>
+                <?
+            }
+            ?>
             <div class="news">
                 <div class="news-item">
                     <div class="news-date">09.02.2012</div>
@@ -50,3 +66,5 @@
     </div>
 </body>
 </html>
+
+
