@@ -1,63 +1,47 @@
 <?
 $db = new PDO("mysql:host=localhost;dbname=workspace__s243;charset=utf8", "root","root");
 
-$news = $db->query("select *  , date_format(date,'%d.%m.%Y' ) fmt from news order by 'date' limit 5 ");
+$page = $_GET['page'] ?? 1;
+
+$limit = 4;
+
+$offset = ($page-1)*$limit;
+
+$rs = $db->query("SELECT COUNT(*) total FROM news");
+$row = $rs->fetch();
+$total = $row['total'];
+
+$pages= ceil($total / $limit);
+
+$sql = "SELECT *  , date_format(date,'%d.%m.%Y' ) fmt from news order by 'date' limit ? offset ?" ;
+$rs = $db->prepare($sql);
+$rs->bindValue(1, $limit, PDO::PARAM_INT);
+$rs->bindValue(2, $offset, PDO::PARAM_INT);
+$rs->execute();
 ?>
 
 <?include("menu.php");?>
 
         <main>
             <h2 class="main-title">Новости</h2>
-            <?
-            while($row = $news->fetch()){
+            
+            <div class="news">
+                <?
+            while($row = $rs->fetch()){
                 ?>
                 <div class="news-item">
                     <div class="news-date"><?=$row['fmt']?></div>
-                    <div class="news-title"><?=$row['title']?></div>
+                    <a href="/news.php?id=<?=$row['id']?>" class="news-title"><?=$row['title']?></a>
                     <div class="news-text"><?=$row['announce']?>
                     </div>
                 <?
             }
+            
+            for($p=1;$p<=$pages;$p++){
+                ?>
+                <a href = "/index.php?page=<?=$p?>"><?=$p?></a>
+            <?}
             ?>
-            <div class="news">
-                <div class="news-item">
-                    <div class="news-date">09.02.2012</div>
-                    <div class="news-title">Геологи вычислили местоположение следующего суперконтинента</div>
-                    <div class="news-text">
-                        Геологи из Йельского университета рассчитали примерное местоположение следующего суперконтинента. Согласно современным представлениям, суперконтиненты на Земле формируются каждые несколько сотен миллионов лет. Последним была Пангея, которая 150-220 миллионов лет назад раскололась на Лавразию и Гондвану.
-                    </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-date">13.02.2012</div>
-                    <div class="news-title">Samsung анонсировала свой первый планшет на Android 4.0</div>
-                    <div class="news-text">
-                        Представлен Galaxy Tab 2, первый планшет Samsung на Android 4.0. Устройство с 7-дюймовым экраном будет стоить дешевле других моделей линейки. По данным СМИ, цена на него будет начинаться от 420 долларов. В продаже будут доступны модели как только с Wi-Fi, так и с Wi-Fi и 3G.
-                    </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-date">09.02.2012</div>
-                    <div class="news-title">Дом Джиоевой взяли штурмом накануне "инаугурации"</div>
-                    <div class="news-text">
-                        Дом оппозиционерки Аллы Джиоевой, объявивший себя президентом Южной Осетии, был взят штурмом накануне инаугурации, которую сама Джиоева назначила на 10 февраля. Джиоева и четверо сотрудников ее штаба были задержаны сотрудниками спецслужб. После задержания Джиоева потеряла сознание, ее увезли в неизвестном направлении.
-                    </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-date">13.02.2012</div>
-                    <div class="news-title">Шувалов предложил ввести уголовное наказание за езду в пьяном виде</div>
-                    <div class="news-text">
-                        В России необходимо ввести наказание за неоднократное управление автомобилем в пьяном виде. Об этом заявил первый вице-премьер России Игорь Шувалов. По словам чиновников, некоторые водители постоянно садятся за руль в нетрезвом состоянии, "даже будучи при этом лишенными прав".
-                    </div>
-                </div>
-
-                <div class="news-item">
-                    <div class="news-date">08.02.2012</div>
-                    <div class="news-title">Австралийцы назвали F-35 "неправильным самолетом"</div>
-                    <div class="news-text">
-                        Комитет по иностранным делам, вооружению и торговле Австралии провел заседание, целью которого была оценка необходимости закупки американских истребителей F-35 для австралийских ВВС. На заседании выступили представители Air Power Australia и RepSim, назвавшие F-35 "неправильным самолетом", который покупать не следует.
-                    </div>
                 </div>
             </div>
         </main>
