@@ -6,25 +6,51 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/mail.php" method ="$_POST">
+    <form method ="post">
     
-    <input type = "text" name = "num1">
-    <input type = "text" name = "num2">
-    <select name = "select">
-    <option value="value1">+</option>
-    <option value="value2">-</option>
-    <option value="value3">*</option>
-    <option value="value4">/</option>
-    </select>
-    <button type = "submit" value = "отправить">отправить</button>
+        <input type = "number" name = "num1" required>
 
+        <select name = "select">
+            <option value="add">+</option>
+            <option value="substract">-</option>
+            <option value="multiply">*</option>
+            <option value="devide">/</option>
+        </select>
 
+        <input type = "number" name = "num2" required>
+        <button type = "submit" name = "calculate">посчитать</button>
 </form>
 </body>
 
 <?
 
+if(isset($_POST['calculate'])){
+    $n1 =  $_POST['num1'];
+    $n2 = $_POST['num2'];
+    $op = $_POST['select'];
+    $result = "";
+    
+    switch($op){
+        case 'add':
+            $result = $n1+$n2;
+            break;
+        case 'substract':
+            $result = $n1-$n2;
+            break;
+        case 'multiply':
+            $result = $n1*$n2;
+            break;
+        case 'devide':
+            if($n2 !=0){
+                $result = $n1/$n2;
 
+            }else{
+                $result = "на ноль делить нельзя";
+            }
+            break;
+    }   
+    echo "<h3>Результат: $result</h3>";
+}
 
 ?>
 
