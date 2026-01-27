@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/mail.php" method ="$_POST"></form>
+    <form action="/index.php" method ="$_POST">
     
     <input type = "mail" name = "mail">
     <input type = "name" name = "name">
