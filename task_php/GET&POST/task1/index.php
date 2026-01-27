@@ -11,7 +11,7 @@
     <input type = "mail" name = "mail">
     <input type = "name" name = "name">
     <textarea>text</textarea>
-    <input type = "submit" value = "отправить">отправить</button>
+    <button type = "submit" value = "отправить">отправить</button>
 
 </form>
 </body>
