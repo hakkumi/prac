@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="eng">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+
+
+<form method="GET">
+    <input type="text" name="query" placeholder="введите название города" 
+           value="<?= htmlspecialchars($_GET['query'] ?? '') ?>">
+    <button type="submit">Найти</button>
+</form>
+
+
+
+
+<?php
+if (!empty($_GET['query'])) {
+    $cities = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань'];
+    $query = $_GET['query'];
+    $found = false;
+
+
+    echo "<h3>результаты поиска:</h3><ul>";
+
+
+    foreach ($cities as $city) {
+        if (mb_stripos($city, $query) !== false) {
+            $highlighted = preg_replace("/(" . preg_quote($query, '/') . ")/iu", "<mark>$1</mark>", $city);
+            echo "<li>$highlighted</li>";
+            $found = true;
+        }
+    }
+
+
+
+    if (!$found) {
+        echo "<li>ничего не найдено</li>";
+    }
+    
+    echo "</ul>";
+}
+?>
+
+
+
+</body>
+</html>
