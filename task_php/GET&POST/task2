@@ -10,7 +10,7 @@
 <form method="GET">
     <input type="text" name="query" placeholder="введите название города" 
            value="<?= htmlspecialchars($_GET['query'] ?? '') ?>">
-    <button type="submit">Найти</button>
+    <button type="submit">поиск</button>
 </form>
 
 
@@ -18,7 +18,7 @@
 
 <?php
 if (!empty($_GET['query'])) {
-    $cities = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Казань'];
+    $cities = ['москва', 'санкт-петербург', 'новосибирск', 'екатеринбург', 'казань'];
     $query = $_GET['query'];
     $found = false;
 
